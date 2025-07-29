@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Evo Genomics Assistant</title>
+    <link rel="stylesheet" href="style_1.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="app">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">Ask Evo Genomics Assistant</h1>
+                <button id="closeSidebar" class="close-btn"><i class="fas fa-times"></i></button>
+                <button id="newChatBtn" class="new-chat-btn">
+                    <i class="fas fa-plus"></i>
+                    New Chat
+                </button>
+            </div>
+
+            <div class="chat-history">
+                <div class="section-title">Recent Consultations</div>
+                
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search consultations..." class="search-input">
+                </div>
+
+                <div id="chatList" class="chat-list">
+                    <!-- Chat items will be populated here -->
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="profile-info">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-details">
+                        <div class="profile-name" id="userName">Dr. Sarah Chen</div>
+                        <div class="profile-role" id="userRole">Clinical Geneticist</div>
+                    </div>
+                    <!--<i class="fas fa-cog settings-icon"></i>-->
+                     <button id="logout-btn" class="logout-icon-btn">
+                         <i class="fas fa-key"></i>
+                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="main-content">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="header-left">
+                    <button id="toggleSidebar" class="sidebar-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="chat-info">
+                        <h2 id="chatTitle" class="chat-title">Welcome</h2>
+                        <div id="chatSubtitle" class="chat-subtitle">Select or create a consultation</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="exportChat" class="action-btn" title="Export Chat">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button id="addToNotes" class="action-btn" title="Add to Clinical Notes">
+                        <i class="fas fa-file-text"></i>
+                    </button>
+                    <button id="shareChat" class="action-btn" title="Share Chat">
+                        <i class="fas fa-share"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="messagesContainer" class="messages-container">
+                <div id="welcomeMessage" class="welcome-message">
+                    <div class="welcome-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h3>Welcome to Clinical Genomics Assistant</h3>
+                    <p>Start a new consultation or select an existing one from the sidebar to begin analyzing genetic variants and providing clinical guidance.</p>
+                    <div class="disclaimer">
+                        <strong>Disclaimer:</strong> This AI assistant provides information for clinical decision support only. All recommendations should be validated against current clinical guidelines.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Input Area -->
+            <div class="message-input-area">
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <div class="typing-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <span>Clinical Genomics Assistant is analyzing...</span>
+                </div>
+
+                <div class="input-container">
+                    <textarea id="messageInput" placeholder="Describe your clinical case, genomic variant, or ask for diagnostic guidance..." class="message-textarea"></textarea>
+                    <button id="sendBtn" class="send-btn" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-action="variant-interpretation">
+                        <i class="fas fa-dna"></i>
+                        Variant Interpretation
+                    </button>
+                    <button class="quick-action-btn" data-action="risk-assessment">
+                        <i class="fas fa-chart-line"></i>
+                        Risk Assessment
+                    </button>
+                    <button class="quick-action-btn" data-action="treatment-guidelines">
+                        <i class="fas fa-prescription"></i>
+                        Treatment Guidelines
+                    </button>
+                </div>
+
+                <div class="status-bar">
+                    <div class="connection-status">
+                        <div class="status-indicator">
+                            <div id="ollamaStatus" class="status-dot offline"></div>
+                            <span id="ollamaStatusText">Ollama Disconnected</span>
+                        </div>
+                        <div class="status-divider">|</div>
+                        <div class="status-indicator">
+                            <i class="fas fa-database"></i>
+                            <span>Database Online</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ollamaWarning" class="warning-message" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <strong>Warning:</strong> Ollama server is not responding. Please ensure your local Ollama service is running.
+                </div>
+
+                <div class="disclaimer-footer">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Disclaimer:</strong> This AI assistant provides information for clinical decision support only. All recommendations should be validated against current clinical guidelines and used in conjunction with professional medical judgment.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="confirmationDialog" class="confirmation-dialog">
+        <div class="dialog-content">
+            <h3 class="dialog-title">Delete Consultation</h3>
+            <p class="dialog-message" id="dialogMessage"></p>
+            <div class="dialog-actions">
+                <button id="dialogCancel" class="dialog-btn dialog-btn-cancel">Cancel</button>
+                <button id="dialogConfirm" class="dialog-btn dialog-btn-confirm">Delete</button>
+            </div>
+        </div>
+    </div>
+    <!-- Logout Confirmation Dialog -->
+<div id="logoutConfirmationDialog" class="logout-confirmation-dialog">
+    <div class="logout-dialog-content">
+        <h3 class="dialog-title">Confirm Logout</h3>
+        <p class="dialog-message">Are you sure you want to log out? Any unsaved changes will be lost.</p>
+        <div class="logout-dialog-actions">
+            <button id="logoutDialogCancel" class="logout-dialog-btn logout-dialog-btn-cancel">Cancel</button>
+            <button id="logoutDialogConfirm" class="logout-dialog-btn logout-dialog-btn-confirm">Log Out</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="mobile-overlay"></div>
+
+    <script src="script_1.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Progenics ChatBot</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .error-message {
+      color: #ff3333;
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+    }
+    .input-error {
+      border: 1px solid #ff3333 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-wrapper">
+    <form id="login-form" class="login-card">
+      <img src="Progenics blue logo.png" class="logo" alt="Progenics" />
+
+      <h2>Login to Ask Evo </h2>
+
+      <div class="radio-group">
+        <label><input type="radio" name="role" value="client" checked> Client</label>
+        <label><input type="radio" name="role" value="organization"> Organization</label>
+        <label><input type="radio" name="role" value="user"> User</label>
+      </div>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required />
+      
+      <div id="credentials-error" class="error-message">Invalid email or password for selected role</div>
+
+      <a href="#" class="forgot-link">Forgot Password?</a>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("login-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const role = document.querySelector('input[name="role"]:checked').value;
+      
+      // Hide any previous error
+      document.getElementById('credentials-error').style.display = 'none';
+      document.getElementById('email').classList.remove('input-error');
+      document.getElementById('password').classList.remove('input-error');
+      
+      // Basic check for empty fields
+      if (!email || !password) {
+        return; // Let browser handle required field validation
+      }
+      
+      // Define valid credentials for each role
+      const validCredentials = {
+        client: {
+          email: 'client@progenics.com',
+          password: 'client123'
+        },
+        organization: {
+          email: 'org@progenics.com',
+          password: 'org123'
+        },
+        user: {
+          email: 'user@progenics.com',
+          password: 'user123'
+        }
+      };
+      
+      // Check credentials based on selected role
+      const isValid = email === validCredentials[role].email && 
+                     password === validCredentials[role].password;
+      
+      if (isValid) {
+        window.location.href = "chat.html";
+      } else {
+        // Show error for wrong credentials
+        document.getElementById('email').classList.add('input-error');
+        document.getElementById('password').classList.add('input-error');
+        document.getElementById('credentials-error').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
