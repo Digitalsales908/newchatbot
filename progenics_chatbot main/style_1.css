@@ -193,6 +193,23 @@ body {
     opacity: 0.5;
     margin-bottom: 8px;
 }
+/* No Results Message */
+.no-results {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.no-results i {
+    font-size: 24px;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
 
 .loading-skeleton {
     display: flex;
@@ -228,26 +245,133 @@ body {
 }
 
 /* Logout Button Styles */
+/* ===== Logout Confirmation Dialog ===== */
+.logout-confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001; /* Higher than other dialogs */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.logout-confirmation-dialog.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.logout-dialog-content {
+  background: var(--bg-primary);
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+.logout-confirmation-dialog.active .logout-dialog-content {
+  transform: translateY(0);
+}
+
+.logout-dialog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.logout-dialog-message {
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.logout-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.logout-dialog-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.logout-dialog-btn-cancel {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.logout-dialog-btn-cancel:hover {
+  background: #e2e8f0;
+}
+
+.logout-dialog-btn-confirm {
+  background: var(--critical-red);
+  color: white;
+  border: none;
+}
+
+.logout-dialog-btn-confirm:hover {
+  background: #dc2626;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .logout-dialog-content {
+    padding: 20px;
+  }
+  
+  .logout-dialog-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logout-dialog-actions {
+    flex-direction: column;
+  }
+  
+  .logout-dialog-btn {
+    width: 100%;
+  }
+}
 #logout-btn {
-    background: none;
-    border: none;
-    color: var(--clinical-gray);   
-    font-size: 1rem;
-    cursor: pointer;
-    padding: 6px;
-    margin-left: auto; /* Pushes to far right */
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+  background: none;
+  border: none;
+  color: var(--clinical-gray);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 36px;
+  height: 36px;
 }
 
 #logout-btn:hover {
-    color: var(--critical-red);
-    background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--critical-red);
+}
+
+#logout-btn i {
+  font-size: 1.1rem;
 }
 
 /* Mobile responsive adjustments */
